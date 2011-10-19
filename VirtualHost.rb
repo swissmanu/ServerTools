@@ -43,17 +43,29 @@ def get_configuration()
   YAML.load_file("config.yml")
 end
 
+#
+# Adds a VirtualHost to Apache
+# Actions:
+#  * Add config in available_sites
+#  * Add symlink in enabled_sites
+#  * Add virtual host to virtual host configuration
+#
+def add_virtualhost(arguments, config)
+  puts "hi"
+  
+  #
+  # 
+  #
+  #if !File.directory?('test')
+  #  FileUtils.mkdir('test')
+  #end
+end
 
+
+#
+# Run the actual script ;-)
+#
 arguments = parse_arguments
 config = get_configuration
 
-
-puts config["apache"]["available_sites"]
-
-
-#
-# 
-#
-#if !File.directory?('test')
-#  FileUtils.mkdir('test')
-#end
+add_virtualhost(arguments, config) if arguments[:action] == :add
