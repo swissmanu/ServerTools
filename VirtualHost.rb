@@ -11,7 +11,7 @@ def parse_arguments()
   arguments = {}
 
   optparse = OptionParser.new do |opts|
-    opts.banner = "Add:\t--add NAME --serveradmin ADMINMAIL [--aliases ALIAS1,ALIAS2,...]\nRemove:\t--remove NAME"
+    opts.banner = "Add:\t--add NAME --serveradmin ADMINMAIL [--aliases ALIAS1,ALIAS2,...]\nEnable:\t--enable NAME\nDisable:\t--disable NAME"
   
     opts.on("--add NAME", String, "Adds a new VirtualHost to Apache") do |name|
       arguments[:action] = :add
