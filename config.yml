@@ -1,6 +1,0 @@
-apache:
-    documentroots: /home/www
-    vhost_config: /etc/apache2/conf.d/virtual.conf
-    available_sites: /etc/apache2/sites-available
-    enabled_sites: /etc/apache2/sites-enabled
-    
