@@ -70,13 +70,11 @@ def customize_file(source, target, placeholders_with_values)
   puts "Customize file\t\t#{source} -> #{target}"
   
   content = File.read(source)
-  
   placeholders_with_values.keys.each do |placeholder|
     content = content.gsub(/\{#{placeholder}\}/, placeholders_with_values[placeholder])
   end
   
-  puts content
-  
+  File.open(target, "w") do |f| f.puts content end
 end
 
 #
@@ -92,7 +90,6 @@ end
 # Actions:
 #  * Add config in available_sites
 #  * Add symlink in enabled_sites
-#  * Add virtual host to virtual host configuration
 #
 def add_virtualhost(virtualhost_name, server_admin, server_aliases, config)
   puts "Add new VirtualHost\t#{virtualhost_name}"
