@@ -9,21 +9,18 @@ def parse_arguments()
   arguments = {}
 
   optparse = OptionParser.new do |opts|
-    opts.banner = "Use: VirtualHost.rb --add --name VHOSTNAME --serveradmin ADMINEMAIL"
+    opts.banner = "Use: --add NAME --serveradmin ADMINMAIL [--aliases ALIAS1,ALIAS2,...]"
   
-    opts.on('--add', 'Adds a new VirtualHost to Apache') do
+    opts.on('--add NAME', String, 'Adds a new VirtualHost to Apache') do |name|
       arguments[:action] = :add
-    end
-    
-    opts.on('--name NAME', String, 'Name for the VirtualHost') do |name|
       arguments[:name] = name
     end
     
-    opts.on('--aliases alias1,alias2,...', Array, 'If needed, pass aliases for your server') do |aliases|
+    opts.on('--aliases ALIAS1,ALIAS2,...', Array, 'If needed, pass aliases for your server') do |aliases|
       arguments[:server_aliases] = "ServerAlias\t#{aliases.join(' ')}"
     end
     
-    opts.on('--serveradmin ADMINEMAIL', String, 'E-Mail address of the server admin') do |serveradmin|
+    opts.on('--serveradmin ADMINMAIL', String, 'E-Mail address of the server admin') do |serveradmin|
       arguments[:server_admin] = serveradmin
     end
   
@@ -38,7 +35,7 @@ def parse_arguments()
   # Validate:
   raise OptionParser::MissingArgument if arguments[:action].nil?
   if arguments[:action] == :add
-    raise OptionParser::MissingArgument if arguments[:name].nil?
+    #raise OptionParser::MissingArgument if arguments[:name].nil?
     raise OptionParser::MissingArgument if arguments[:server_admin].nil?
     arguments[:server_aliases] = "" if arguments[:server_aliases].nil?
   end
