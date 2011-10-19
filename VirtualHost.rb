@@ -18,11 +18,6 @@ def parse_arguments()
       arguments[:name] = name
     end
     
-    opts.on("--remove NAME", String, "Removes a Virtual Host (if existing)") do |name|
-      arguments[:action] = :remove
-      arguments[:name] = name
-    end
-    
     opts.on("--enable NAME", String, "Enables a Virtual Host") do |name|
       arguments[:action] = :enable
       arguments[:name] = name
@@ -94,7 +89,7 @@ end
 # Deletes a file and puts a message to the console.
 #
 def delete_file(file)
-  puts "Delete file\t#{file}"
+  puts "Delete file/\t#{file}"
   FileUtils.remove(file)
 end
 
@@ -152,16 +147,6 @@ def add_virtualhost(virtualhost_name, server_admin, server_aliases, config)
 end
 
 #
-# Deletes a Virtual host if possible.
-#
-def remove_virtualhost(virtualhost_name, config)
-  puts "Remove VirtualHost\t#{virtualhost_name}"
-  puts " -> not yet implemented, sry ;)"
-  
-  document_root = config["apache"]["documentroots"] + "/#{virtualhost_name}"
-end
-
-#
 # Creates a symlink from the sites-available directory to the sites-enabled
 # directory for the given virtual host.
 #
@@ -210,6 +195,5 @@ arguments = parse_arguments
 config = get_configuration
 
 add_virtualhost(arguments[:name], arguments[:server_admin], arguments[:server_aliases], config) if arguments[:action] == :add
-remove_virtualhost(arguments[:name], config) if arguments[:action] == :remove
 enable_virtualhost(arguments[:name], config) if arguments[:action] == :enable
 disable_virtualhost(arguments[:name], config) if arguments[:action] == :disable
