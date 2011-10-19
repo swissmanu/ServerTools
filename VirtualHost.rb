@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require "pathname"
 require "optparse"
 require "yaml"
 require "fileutils"
@@ -58,7 +59,8 @@ end
 # Loads the config.yaml and returns the contents as hash
 #
 def get_configuration()
-  YAML.load_file("config.yml")
+  servertools_path = Pathname.new($0).realpath().parent()
+  YAML.load_file("#{servertools_path}/config.yml")
 end
 
 #
@@ -118,6 +120,7 @@ end
 def add_virtualhost(virtualhost_name, server_admin, server_aliases, config)
   puts "Add new VirtualHost\t#{virtualhost_name}"
   
+  servertools_path = Pathname.new($0).realpath().parent()
   document_root = config["apache"]["documentroots"] + "/#{virtualhost_name}"
   available_site = config["apache"]["available_sites"] + "/#{virtualhost_name}"
   htdocs_path = "#{document_root}/htdocs"
@@ -142,7 +145,7 @@ def add_virtualhost(virtualhost_name, server_admin, server_aliases, config)
     "server_alias" => server_aliases,
     "server_admin" => server_admin
   }
-  customize_file("templates/virtualhost", available_site, placeholders_with_values)
+  customize_file("#{servertools_path}/templates/virtualhost", available_site, placeholders_with_values)
   enable_virtualhost(virtualhost_name, config)
 end
 
