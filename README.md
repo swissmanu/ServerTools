@@ -11,4 +11,4 @@ It automates the steps from the [Debian Administration article](http://www.debia
 
 Usage:
 
-	ruby VirtualHost.rb --add --name www.myhost.com --serveradmin admin@myhost.com [--aliases myhost.com,...]
+	ruby VirtualHost.rb --add www.myhost.com --serveradmin admin@myhost.com [--aliases myhost.com,...]
