@@ -3,7 +3,7 @@ require 'yaml'
 require 'fileutils'
 
 #
-# Parse passed arguments and save them as hash in arguments:
+# Parse command line arguments and return them inside a hash.
 #
 def parse_arguments()
   arguments = {}
@@ -33,4 +33,10 @@ def parse_arguments()
 end
 
 
-parse_arguments
+
+#
+# 
+#
+#if !File.directory?('test')
+#  FileUtils.mkdir('test')
+#end
