@@ -10,4 +10,5 @@ This script supports the creation of virtual hosts for the Apache web server.
 It automates the steps from the [Debian Administration article](http://www.debian-administration.org/articles/412)
 
 Usage:
-	ruby VirtualHost.rb --add --name www.myhost.com --serveradmin admin@myhost.com [--aliases myhost.com,...]
+
+	ruby VirtualHost.rb --add www.myhost.com --serveradmin admin@myhost.com [--aliases myhost.com,...]
