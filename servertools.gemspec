@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
 
   ##
   # servertools CLI executable
-  gem.executables   = ['servertools']
+  gem.executables   = ['virtualhosts']
 
   ##
   # Gem dependencies

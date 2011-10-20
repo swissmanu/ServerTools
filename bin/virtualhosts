@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+##
+# Try to load Thor
+begin
+  require "thor"
+rescue LoadError
+  puts "\nServerTools need Thor.\nPlease install it first:\n\ngem install thor -v '~> 0.14.6'"
+  exit 1
+end
+
+##
+# Include the tools:
+require File.expand_path("../../lib/servertools", __FILE__)
+
+##
+# Command line interface with Thor
+class ApacheCLI < Thor
+  
+  desc "enable", "Enables an already existing virtual host.\n" +
+                 "After enabling a host, it will be accessible through Apache."
+  def enable(vhostname)
+    
+  end
+  
+  ##
+  # [Version]
+  # Display the version of ServerTools
+  map "-v" => :version
+  desc "version", "Display ServerTools version"
+  def version
+    puts "VirtualHosts is part of ServerTools #{ServerTools::Version.current}"
+  end
+  
+end
+
+##
+# Start the CLI
+ApacheCLI.start
