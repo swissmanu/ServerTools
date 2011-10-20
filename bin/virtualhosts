@@ -24,13 +24,15 @@ class VirtualHostsCLI < Thor
   # current Apache installation.
   desc "add VHOSTNAME", "Adds a new virtual host to Apache and enables it.\nExample:\n" +
                         "\s\s$ virtualhosts add www.host.com -m admin@host.com -a host.com,a.host.com"
-  method_option :admin_email, :type => :string,   :aliases => "-m",   :required => true
-  method_option :aliases,     :type => :array,    :aliases => "-a"
-  method_option :dont_enable, :type => :boolean,  :default => false
+  method_option :admin_email,     :type => :string,   :aliases => "-m", :required => true
+  method_option :aliases,         :type => :array,    :aliases => "-a"
+  method_option :directory_index, :type => :array,    :aliases => "-i", :default => ["index.php","index.html"]
+  method_option :dont_enable, :type => :boolean,                        :default => false
   def add(vhostname)
     virtualhost = ServerTools::Apache::VirtualHost.new(vhostname)
-    virtualhost.put_option(:admin_email,  options[:admin_email])
-    virtualhost.put_option(:aliases,      options[:aliases])
+    virtualhost.put_option(:admin_email,      options[:admin_email])
+    virtualhost.put_option(:directory_index,  options[:directory_index])
+    virtualhost.put_option(:aliases,          options[:aliases])
     
     virtualhost.create!
   end  

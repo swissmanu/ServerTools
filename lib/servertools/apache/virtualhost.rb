@@ -22,13 +22,23 @@ module ServerTools
 
       ##
       # Adds an option to this VirtualHost
-      # If value is nil, nothing gets added.
+      # If value is an Array, it gets joined by spaces before the value gets
+      # added to the options Hash.
+      # If value is nil, nothing happens.
       def put_option(key, value)
-        @options[key] = value if !value.nil?
+        if !value.nil?
+          value = value.join(" ") if value.kind_of?(Array)
+          @options[key] = value
+        end
       end
 
+      ##
+      # Takes the information of this VirtualHost and creates the configuration
+      # files for the Apache installation.
       def create!
         ServerTools::Logger.message("Create VirtualHost #{@name}")
+        
+        #puts parse_options(@options)
       end
       
       def delete!
@@ -43,7 +53,26 @@ module ServerTools
         
       end
       
-
+      ##
+      # Takes a Hash and looks for supported options, translates them into
+      # Apache understandable configuration directives and returns the complete
+      # stuff as String.
+      def parse_options(options)
+        parsed_options = ""
+        parsed_options << translate_option_key(:admin_email,    "ServerAdmin",    options)
+        parsed_options << translate_option_key(:aliases,        "ServerAlias",    options)
+        parsed_options << translate_option_key(:directory_index,"DirectoryIndex", options)
+      end
+      
+      ##
+      # Looks for a key inside options. If found, plain_key and the value of
+      # the actual key gets returned as String.
+      # Returns "" if key is not present in options
+      def translate_option_key(key, plain_key, options)
+        return "#{plain_key}\t#{options[key]}\n" if options.has_key?(key)
+        ""
+      end
+      
       ##
       # Creates a new configuration file inside the sites-available directory.
       # The new virtual host gets enabled imediatly if wished.
