@@ -23,6 +23,7 @@ do it with `gem install thor`
 
 Credits
 -------
-Since I'm fairly new to Ruby, I'd like to thank espacially meskyanichi for
-sharing the code of meskyanichi/Backup which helped me when I tried to understand
-some basic Ruby and Ruby Gem concepts.
+Since I'm fairly new to Ruby, I'd like to thank espacially
+[meskyanichi](https://github.com/meskyanichi) for sharing the code of
+[meskyanichi/backup](https://github.com/meskyanichi/backup) which helped me
+when I tried to understand some basic Ruby and Ruby Gem concepts.
