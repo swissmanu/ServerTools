@@ -1,18 +1,52 @@
 #!/usr/bin/env ruby
-require "thor"
 require "pathname"
-require "yaml"
 require "fileutils"
 
 module ServerTools
   module Apache
     
-    class VirtualHosts
+    ##
+    # Represents a virtual host with all its properties and possible actions.
+    class VirtualHost
+
+      ##
+      # Virtual host name. Example: www.host.com
+      attr_accessor :name
+      
+      ##
+      # Create a new VirtualHost with name
+      def initialize(name)
+        @name = name
+        @options = Hash.new
+      end
+
+      ##
+      # Adds an option to this VirtualHost
+      def put_option(key, value)
+        @options[key] = value
+      end
+
+      def create
+        
+      end
+      
+      def delete
+        
+      end
+      
+      def enable
+        
+      end
+      
+      def disable
+        
+      end
+      
 
       ##
       # Creates a new configuration file inside the sites-available directory.
       # The new virtual host gets enabled imediatly if wished.
-    	def add(virtualhost)
+    	#def add(virtualhost)
     	  
         #puts "Add new VirtualHost\t#{virtualhost_name}"
 
@@ -43,12 +77,12 @@ module ServerTools
         #}
         #customize_file("#{servertools_path}/templates/virtualhost", available_site, placeholders_with_values)
         #enable_virtualhost(virtualhost_name, config)
-    	end
+    	#end
 	
     	##
     	# Enables a virtual host by creating a symlink from its configuration file
     	# inside sites-available to sites-enabled.
-    	def enable(virtualhost)
+    	#def enable(virtualhost)
         #puts "Enable VirtualHost\t#{virtualhost_name}"
         #available_site = config["apache"]["available_sites"] + "/#{virtualhost_name}"
         #enabled_site = config["apache"]["enabled_sites"] + "/#{virtualhost_name}"
@@ -65,13 +99,13 @@ module ServerTools
 
         #create_symlink(available_site, enabled_site)
         #reload_apache
-      end
+      #end
   
       ##
       # Disables a virtual host by deleting its symlink inside the sites-enabled
       # directory.
-      def disable(virtualhost)
-    	  Apache.reload_configuration
+      #def disable(virtualhost)
+    	  #Apache.reload_configuration
     	  
         #puts "Disable VirtualHost\t#{virtualhost_name}"
         #enabled_site = config["apache"]["enabled_sites"] + "/#{virtualhost_name}"
@@ -83,7 +117,7 @@ module ServerTools
 
         #delete_file(enabled_site)
         #reload_apache
-      end
+      #end
 	
     end
 

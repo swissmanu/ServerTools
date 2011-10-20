@@ -17,7 +17,7 @@ module ServerTools
   # Apache tools
   module Apache
     autoload :Base,         File.join(APACHE_PATH, "base")
-    autoload :VirtualHosts, File.join(APACHE_PATH, "virtualhosts")
+    autoload :VirtualHost,  File.join(APACHE_PATH, "virtualhost")
   end
   
 end
