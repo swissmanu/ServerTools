@@ -22,23 +22,24 @@ module ServerTools
 
       ##
       # Adds an option to this VirtualHost
+      # If value is nil, nothing gets added.
       def put_option(key, value)
-        @options[key] = value
+        @options[key] = value if !value.nil?
       end
 
-      def create
+      def create!
         
       end
       
-      def delete
+      def delete!
         
       end
       
-      def enable
+      def enable!
         
       end
       
-      def disable
+      def disable!
         
       end
       
