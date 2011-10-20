@@ -11,6 +11,7 @@ module ServerTools
   ##
   # Common ServerTools stuff
   autoload :Base,           File.join(LIBRARY_PATH, "base")
+  autoload :Logger,         File.join(LIBRARY_PATH, "logger")
   autoload :Version,        File.join(LIBRARY_PATH, "version")
   
   ##

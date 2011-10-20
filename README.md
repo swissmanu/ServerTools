@@ -18,8 +18,8 @@ with a few simple commands:
 	
 Dependencies
 ------------
-ServerTools is builded on Thor. Make sure you have its gem installed, otherwise
-do it with `gem install thor`
+ServerTools is builded on [Thor](https://github.com/wycats/thor). Make sure
+you have the gem installed, otherwise get it with `gem install thor`
 
 Credits
 -------
