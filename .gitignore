@@ -2,3 +2,4 @@
 config.yml
 testing/
 *.tmproj
+*.gem
