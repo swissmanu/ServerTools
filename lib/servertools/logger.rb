@@ -71,3 +71,5 @@ module ServerTools
     def self.quiet?
       const_defined?(:QUIET) && QUIET
     end
+  end
+end

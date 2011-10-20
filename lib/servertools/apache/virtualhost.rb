@@ -28,7 +28,7 @@ module ServerTools
       end
 
       def create!
-        
+        ServerTools::Logger.message("Create VirtualHost #{@name}")
       end
       
       def delete!
