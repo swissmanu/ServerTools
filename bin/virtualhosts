@@ -36,14 +36,14 @@ class VirtualHostsCLI < Thor
   end
   
   desc "enable VHOSTNAME", "Enables an already existing virtual host.\n" +
-                 "After enabling a host, it will be accessible through Apache."
+                           "After enabling a host, it will be accessible through Apache."
   def enable(vhostname)
     virtualhosts = ServerTools::Apache::VirtualHosts.new
   end
   
   desc "disable VHOSTNAME", "Disables an enabled virtual host.\n" +
-                  "After disabling a host, it will not be accessible through Apache anymore.\n" +
-                  "You will not loose any data by disabling a virtual host."
+                            "After disabling a host, it will not be accessible through Apache anymore.\n" +
+                            "You will not loose any data by disabling a virtual host."
   def disable(vhostname)
     virtualhosts = ServerTools::Apache::VirtualHosts.new
   end
