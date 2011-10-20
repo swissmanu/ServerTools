@@ -19,33 +19,47 @@ require File.expand_path("../../lib/servertools", __FILE__)
 # Command line interface with Thor
 class VirtualHostsCLI < Thor
   
+  ##
+  # Models a VirtualHost with given options and creates it afterwards for the
+  # current Apache installation.
   desc "add VHOSTNAME", "Adds a new virtual host to Apache and enables it.\nExample:\n" +
                         "\s\s$ virtualhosts add www.host.com -m admin@host.com -a host.com,a.host.com"
   method_option :admin_email, :type => :string,   :aliases => "-m",   :required => true
   method_option :aliases,     :type => :array,    :aliases => "-a"
   method_option :dont_enable, :type => :boolean,  :default => false
   def add(vhostname)
-    virtualhosts = ServerTools::Apache::VirtualHosts.new
+    virtualhost = ServerTools::Apache::VirtualHost.new(vhostname)
+    virtualhost.put_option(:admin_email,  options[:admin_email])
+    virtualhost.put_option(:aliases,      options[:aliases])
+    
+    virtualhost.create!
   end  
 
+  ##
+  # Removes an existing VirtualHost. If wished, also the documentroot gets
+  # deleted.
   desc "remove VHOSTNAME", "Removes a virtual host from Apache."
   method_option :force,               :type => :boolean,  :aliases => "-f", :default => false,  :desc => "Don't ask for confirmation"
   method_option :delete_documentroot, :type => :boolean,                    :default => false
   def remove(vhostname)
-    virtualhosts = ServerTools::Apache::VirtualHosts.new
+    puts "not yet implemented"
   end
   
+  ##
+  # Enables an existing VirtualHost
   desc "enable VHOSTNAME", "Enables an already existing virtual host.\n" +
                            "After enabling a host, it will be accessible through Apache."
   def enable(vhostname)
-    virtualhosts = ServerTools::Apache::VirtualHosts.new
+    ServerTools::Apache::VirtualHost.new(vhostname).enable!
   end
   
+  ##
+  # Disables an enabled VirtualHost
   desc "disable VHOSTNAME", "Disables an enabled virtual host.\n" +
                             "After disabling a host, it will not be accessible through Apache anymore.\n" +
                             "You will not loose any data by disabling a virtual host."
   def disable(vhostname)
-    virtualhosts = ServerTools::Apache::VirtualHosts.new
+    ServerTools::Apache::VirtualHost.new(virtualhosts).disable!
   end
   
   ##
