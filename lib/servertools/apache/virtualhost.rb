@@ -37,10 +37,16 @@ module ServerTools
       # files for the Apache installation.
       def create!
         ServerTools::Logger.message("Create VirtualHost #{@name}")
+        document_roots  = ServerTools::Configuration.get("apache","documentroots")
+        document_root   = File.join(document_roots, @name)
+        access_log      = File.join(document_roots, @name, "logs/access.log")
+        error_log       = File.join(document_roots, @name, "logs/error.log")
+        available_site  = File.join(ServerTools::Configuration.get("apache","available_sites"), @name)
         
-        puts ServerTools::Configuration.get("apache","documentroots")
-        
-        #puts parse_options(@options)
+        ServerTools::Logger.message("Document root: #{document_roots}")
+        ServerTools::Logger.message("Access log: #{access_log}")
+        ServerTools::Logger.message("Error log: #{error_log}")
+        ServerTools::Logger.message("Configuration: #{available_site}")
       end
       
       def delete!
