@@ -137,55 +137,12 @@ module ServerTools
         ""
       end
       
-      
       ##
       # Takes parts of a path, joins them and expand it to an absolute path.
       def join_and_expand_path(*parts)
         File.expand_path(File.join(parts))
       end
       
-	
-    	##
-    	# Enables a virtual host by creating a symlink from its configuration file
-    	# inside sites-available to sites-enabled.
-    	#def enable(virtualhost)
-        #puts "Enable VirtualHost\t#{virtualhost_name}"
-        #available_site = config["apache"]["available_sites"] + "/#{virtualhost_name}"
-        #enabled_site = config["apache"]["enabled_sites"] + "/#{virtualhost_name}"
-
-        #if !File.exists?(available_site)
-        #  puts "The virtual host #{virtualhost_name} seems not to exist. Use --add to create"
-        #  exit
-        #end
-
-        #if File.symlink?(enabled_site)
-        #  puts "The virtual host #{virtualhost_name} is already enabled."
-        #  exit
-        #end
-
-        #create_symlink(available_site, enabled_site)
-        #reload_apache
-      #end
-  
-      ##
-      # Disables a virtual host by deleting its symlink inside the sites-enabled
-      # directory.
-      #def disable(virtualhost)
-    	  #Apache.reload_configuration
-    	  
-        #puts "Disable VirtualHost\t#{virtualhost_name}"
-        #enabled_site = config["apache"]["enabled_sites"] + "/#{virtualhost_name}"
-
-        #if !File.symlink?(enabled_site)
-        #  puts "The virtual host #{virtualhost_name} is not enabled."
-        #  exit
-        #end
-
-        #delete_file(enabled_site)
-        #reload_apache
-      #end
-	
     end
-
   end
 end

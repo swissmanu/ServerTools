@@ -35,6 +35,7 @@ class VirtualHostsCLI < Thor
     virtualhost.put_option(:aliases,          options[:aliases])
     
     virtualhost.create!
+    invoke :enable if !options[:dont_enable]
   end  
 
   ##
@@ -53,6 +54,7 @@ class VirtualHostsCLI < Thor
                            "After enabling a host, it will be accessible through Apache."
   def enable(vhostname)
     ServerTools::Apache::VirtualHost.new(vhostname).enable!
+    ServerTools::Apache::Server.reload_configuration!
   end
   
   ##
@@ -62,6 +64,7 @@ class VirtualHostsCLI < Thor
                             "You will not loose any data by disabling a virtual host."
   def disable(vhostname)
     ServerTools::Apache::VirtualHost.new(vhostname).disable!
+    ServerTools::Apache::Server.reload_configuration!
   end
   
   ##
