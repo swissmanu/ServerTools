@@ -41,8 +41,8 @@ module ServerTools
         available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)        
 
         put_option(:document_root,  join_and_expand_path(document_roots, @name))
-        put_option(:error_log,      "#{logs}/error.log")
-        put_option(:custom_log,     "#{logs}/access.log combined")
+        put_option(:error_log,      join_and_expand_path(logs, "error.log"))
+        put_option(:custom_log,     "#{join_and_expand_path(logs,"access.log")} combined")
         
         ServerTools::Logger.message("Create VirtualHost \"#{@name}\"")
         ServerTools::Logger.message("Document root: #{@options[:document_root]}")
