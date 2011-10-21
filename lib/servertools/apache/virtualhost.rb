@@ -36,17 +36,23 @@ module ServerTools
       # Takes the information of this VirtualHost and creates the configuration
       # files for the Apache installation.
       def create!
-        ServerTools::Logger.message("Create VirtualHost #{@name}")
         document_roots  = ServerTools::Configuration.get("apache","documentroots")
-        document_root   = File.join(document_roots, @name)
-        access_log      = File.join(document_roots, @name, "logs/access.log")
-        error_log       = File.join(document_roots, @name, "logs/error.log")
-        available_site  = File.join(ServerTools::Configuration.get("apache","available_sites"), @name)
+        document_root   = join_and_expand_path(document_roots, @name)
+        access_log      = join_and_expand_path(document_roots, @name, "logs/access.log")
+        error_log       = join_and_expand_path(document_roots, @name, "logs/error.log")
+        available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)
         
-        ServerTools::Logger.message("Document root: #{document_roots}")
+        ServerTools::Logger.message("Create VirtualHost \"#{@name}\"")
+        ServerTools::Logger.message("Document root: #{document_root}")
         ServerTools::Logger.message("Access log: #{access_log}")
         ServerTools::Logger.message("Error log: #{error_log}")
         ServerTools::Logger.message("Configuration: #{available_site}")
+        
+        if File.exists?(available_site)
+          ServerTools::Logger.error("Configuration does already exist!")
+          exit
+        end
+        
       end
       
       def delete!
@@ -60,6 +66,8 @@ module ServerTools
       def disable!
         
       end
+      
+      private
       
       ##
       # Takes a Hash and looks for supported options, translates them into
@@ -79,6 +87,10 @@ module ServerTools
       def translate_option_key(key, plain_key, options)
         return "#{plain_key}\t#{options[key]}\n" if options.has_key?(key)
         ""
+      end
+      
+      def join_and_expand_path(*parts)
+        File.expand_path(File.join(parts))
       end
       
       ##
