@@ -77,6 +77,9 @@ module ServerTools
         
       end
       
+      ##
+      # If not already existing, this method creates a symlink for this virtual
+      # host inside of Apaches sites-enabled directory.
       def enable!
         available_site = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)
         enabled_site   = join_and_expand_path(ServerTools::Configuration.get("apache","enabled_sites"), @name)
@@ -94,6 +97,9 @@ module ServerTools
         ServerTools::Logger.message("#{@name} enabled")
       end
       
+      ##
+      # If existing, deletes the symlink for this virtual host in Apaches
+      # sites-enabled directory.
       def disable!
         enabled_site = join_and_expand_path(ServerTools::Configuration.get("apache","enabled_sites"), @name)
         
