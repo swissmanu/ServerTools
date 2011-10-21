@@ -37,20 +37,38 @@ module ServerTools
       # files for the Apache installation.
       def create!
         document_roots  = ServerTools::Configuration.get("apache","documentroots")
-        document_root   = join_and_expand_path(document_roots, @name)
-        access_log      = join_and_expand_path(document_roots, @name, "logs/access.log")
-        error_log       = join_and_expand_path(document_roots, @name, "logs/error.log")
-        available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)
+        logs            = join_and_expand_path(document_roots, @name, "logs")
+        available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)        
+
+        put_option(:document_root,  join_and_expand_path(document_roots, @name))
+        put_option(:error_log,      "#{logs}/error.log")
+        put_option(:custom_log,     "#{logs}/access.log combined")
         
         ServerTools::Logger.message("Create VirtualHost \"#{@name}\"")
-        ServerTools::Logger.message("Document root: #{document_root}")
-        ServerTools::Logger.message("Access log: #{access_log}")
-        ServerTools::Logger.message("Error log: #{error_log}")
+        ServerTools::Logger.message("Document root: #{@options[:document_root]}")
+        ServerTools::Logger.message("Logs: #{logs}")
         ServerTools::Logger.message("Configuration: #{available_site}")
         
         if File.exists?(available_site)
           ServerTools::Logger.error("Configuration does already exist!")
           exit
+        end
+        if Dir.exists?(@options[:document_root])
+          ServerTools::Logger.error("Document root does already exist!")
+          exit
+        end
+        
+        FileUtils.mkpath(@options[:document_root])
+        FileUtils.mkpath(logs)
+        
+        File.open(available_site, "w") do |f|
+          f.puts %Q{\#
+\# #{@name} (#{available_site})
+\#
+<VirtualHost *>
+#{parse_options(@options)}
+</VirtualHost>
+          }
         end
         
       end
@@ -76,8 +94,11 @@ module ServerTools
       def parse_options(options)
         parsed_options = ""
         parsed_options << translate_option_key(:admin_email,    "ServerAdmin",    options)
+        parsed_options << translate_option_key(:document_root,  "DocumentRoot",   options)
         parsed_options << translate_option_key(:aliases,        "ServerAlias",    options)
         parsed_options << translate_option_key(:directory_index,"DirectoryIndex", options)
+        parsed_options << translate_option_key(:error_log,      "ErrorLog",       options)
+        parsed_options << translate_option_key(:custom_log,     "CustomLog",      options)
       end
       
       ##
@@ -85,7 +106,7 @@ module ServerTools
       # the actual key gets returned as String.
       # Returns "" if key is not present in options
       def translate_option_key(key, plain_key, options)
-        return "#{plain_key}\t#{options[key]}\n" if options.has_key?(key)
+        return "  #{plain_key}\t#{options[key]}\n" if options.has_key?(key)
         ""
       end
       
