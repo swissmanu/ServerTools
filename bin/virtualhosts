@@ -61,7 +61,7 @@ class VirtualHostsCLI < Thor
                             "After disabling a host, it will not be accessible through Apache anymore.\n" +
                             "You will not loose any data by disabling a virtual host."
   def disable(vhostname)
-    ServerTools::Apache::VirtualHost.new(virtualhosts).disable!
+    ServerTools::Apache::VirtualHost.new(vhostname).disable!
   end
   
   ##

@@ -38,7 +38,7 @@ module ServerTools
       def create!
         document_roots  = ServerTools::Configuration.get("apache","documentroots")
         logs            = join_and_expand_path(document_roots, @name, "logs")
-        available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)        
+        available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)
 
         put_option(:document_root,  join_and_expand_path(document_roots, @name))
         put_option(:error_log,      join_and_expand_path(logs, "error.log"))
@@ -78,11 +78,32 @@ module ServerTools
       end
       
       def enable!
-        
+        available_site = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)
+        enabled_site   = join_and_expand_path(ServerTools::Configuration.get("apache","enabled_sites"), @name)
+
+        if File.symlink?(enabled_site)
+          ServerTools::Logger.error("#{@name } is already enabled")
+          exit
+        end
+        if !File.exists?(available_site)
+          ServerTools::Logger.error("#{@name} does not exist!")
+          exit
+        end
+
+        FileUtils.symlink(available_site, enabled_site)
+        ServerTools::Logger.message("#{@name} enabled")
       end
       
       def disable!
+        enabled_site = join_and_expand_path(ServerTools::Configuration.get("apache","enabled_sites"), @name)
         
+        if !File.symlink?(enabled_site)
+          ServerTools::Logger.error("#{@name} is not enabled!")
+          exit
+        end
+        
+        File.delete(enabled_site)
+        ServerTools::Logger.message("#{@name} disabled")
       end
       
       private
@@ -110,45 +131,13 @@ module ServerTools
         ""
       end
       
+      
+      ##
+      # Takes parts of a path, joins them and expand it to an absolute path.
       def join_and_expand_path(*parts)
         File.expand_path(File.join(parts))
       end
       
-      ##
-      # Creates a new configuration file inside the sites-available directory.
-      # The new virtual host gets enabled imediatly if wished.
-    	#def add(virtualhost)
-    	  
-        #puts "Add new VirtualHost\t#{virtualhost_name}"
-
-        #servertools_path = Pathname.new($0).realpath().parent()
-        #document_root = config["apache"]["documentroots"] + "/#{virtualhost_name}"
-        #available_site = config["apache"]["available_sites"] + "/#{virtualhost_name}"
-        #htdocs_path = "#{document_root}/htdocs"
-        #logs_path = "#{document_root}/logs"
-
-        #if File.directory?(document_root)
-          #puts "It seems that the VirtualHost \"#{virtualhost_name}\" already exists. Exiting."
-          #exit
-        #end
-    
-        # Add document root with its subfolders:
-        #create_directory(htdocs_path)
-        #create_directory(logs_path)
-
-        # Create virtual host configuration
-        #placeholders_with_values = {
-        #  "document_root" => document_root,
-        #  "htdocs_path" => htdocs_path,
-        #  "logs_path" => logs_path,
-        #  "virtualhost_name" => virtualhost_name,
-        #  "available_site" => available_site,
-        #  "server_alias" => server_aliases,
-        #  "server_admin" => server_admin
-        #}
-        #customize_file("#{servertools_path}/templates/virtualhost", available_site, placeholders_with_values)
-        #enable_virtualhost(virtualhost_name, config)
-    	#end
 	
     	##
     	# Enables a virtual host by creating a symlink from its configuration file
