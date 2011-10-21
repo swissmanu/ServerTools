@@ -19,12 +19,6 @@ module ServerTools
     def self.normal(string)
       puts string unless quiet?
     end
-    
-    ##
-    # Returns the time in [YYYY/MM/DD HH:MM:SS] format
-    def self.time
-      Time.now.strftime("%Y/%m/%d %H:%M:%S")
-    end
 
     ##
     # Builds the string in a log format with the date/time, the type (colorized)
@@ -32,8 +26,8 @@ module ServerTools
     # ANSI color codes are only used in the console, and are not written to the log
     # since it doesn't do anything and just adds more unnecessary bloat to the log file
     def self.loggify(type, string, color = false)
-      return "[#{time}][#{type}] #{string}" unless color
-      "[#{time}][#{send(color, type)}] #{string}"
+      return "[#{type}] #{string}" unless color
+      "[#{send(color, type)}] #{string}"
     end
     
     ##
