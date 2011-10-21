@@ -1,12 +1,4 @@
 module ServerTools
-  
-  #
-  # Loads the config.yaml and returns the contents as hash
-  #
-  def get_configuration()
-    servertools_path = Pathname.new($0).realpath().parent()
-    YAML.load_file("#{servertools_path}/config.yml")
-  end
 
   #
   # Creates the complete path passed and puts a message to the console.

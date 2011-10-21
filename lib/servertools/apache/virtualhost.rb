@@ -38,6 +38,8 @@ module ServerTools
       def create!
         ServerTools::Logger.message("Create VirtualHost #{@name}")
         
+        puts ServerTools::Configuration.get("apache","documentroots")
+        
         #puts parse_options(@options)
       end
       
