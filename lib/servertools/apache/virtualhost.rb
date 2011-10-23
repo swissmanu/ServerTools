@@ -40,7 +40,7 @@ module ServerTools
         logs            = join_and_expand_path(document_roots, @name, "logs")
         available_site  = join_and_expand_path(ServerTools::Configuration.get("apache","available_sites"), @name)
 
-        put_option(:document_root,  join_and_expand_path(document_roots, @name))
+        put_option(:document_root,  join_and_expand_path(document_roots, @name, "htdocs"))
         put_option(:error_log,      join_and_expand_path(logs, "error.log"))
         put_option(:custom_log,     "#{join_and_expand_path(logs,"access.log")} combined")
         
