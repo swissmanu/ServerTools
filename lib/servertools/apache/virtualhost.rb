@@ -67,6 +67,7 @@ module ServerTools
 \#
 <VirtualHost *>
 #{parse_options(@options)}
+#{htaccess_configuration(@options)}
 </VirtualHost>
           }
         end
@@ -143,6 +144,22 @@ module ServerTools
         File.expand_path(File.join(parts))
       end
       
+      ##
+      # If :htaccess_capable is available in options and set to true,
+      # this functions returns a configuration directive to allow .htaccess
+      # for the given document root
+      def htaccess_configuration(options)
+        directive = ""
+        if options.has_key?(:htaccess_capable)
+          directive  = "  <Directory #{options[:document_root]}>\n"
+          directive << "    Order allow,deny\n"
+          directive << "    Options FollowSymLinks\n"
+          directive << "    AllowOverride all\n"
+          directive << "    Allow from all\n"
+          directive << "  </Directory>\n"
+        end
+        return directive
+      end
     end
   end
 end

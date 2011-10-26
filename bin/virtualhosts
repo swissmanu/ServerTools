@@ -27,12 +27,14 @@ class VirtualHostsCLI < Thor
   method_option :admin_email,     :type => :string,   :aliases => "-m", :required => true
   method_option :aliases,         :type => :array,    :aliases => "-a"
   method_option :directory_index, :type => :array,    :aliases => "-i", :default => ["index.php","index.html"]
-  method_option :dont_enable, :type => :boolean,                        :default => false
+  method_option :dont_enable,     :type => :boolean,                    :default => false
+  method_option :no_htaccess,     :type => :boolean,                    :default => false,  :desc => "Don't add configuration to allow .htaccess"
   def add(vhostname)
     virtualhost = ServerTools::Apache::VirtualHost.new(vhostname)
     virtualhost.put_option(:admin_email,      options[:admin_email])
     virtualhost.put_option(:directory_index,  options[:directory_index])
     virtualhost.put_option(:aliases,          options[:aliases])
+    virtualhost.put_option(:htaccess_capable, !options[:no_htaccess])
     
     virtualhost.create!
     invoke :enable if !options[:dont_enable]
