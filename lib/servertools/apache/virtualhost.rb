@@ -66,6 +66,7 @@ module ServerTools
 \# #{@name} (#{available_site})
 \#
 <VirtualHost *>
+\tServerName\t#{@name}
 #{parse_options(@options)}
 #{htaccess_configuration(@options)}
 </VirtualHost>
@@ -86,7 +87,7 @@ module ServerTools
         enabled_site   = join_and_expand_path(ServerTools::Configuration.get("apache","enabled_sites"), @name)
 
         if File.symlink?(enabled_site)
-          ServerTools::Logger.error("#{@name } is already enabled")
+          ServerTools::Logger.error("#{@name} is already enabled")
           exit
         end
         if !File.exists?(available_site)
@@ -134,7 +135,7 @@ module ServerTools
       # the actual key gets returned as String.
       # Returns "" if key is not present in options
       def translate_option_key(key, plain_key, options)
-        return "  #{plain_key}\t#{options[key]}\n" if options.has_key?(key)
+        return "\t#{plain_key}\t#{options[key]}\n" if options.has_key?(key)
         ""
       end
       
@@ -151,12 +152,12 @@ module ServerTools
       def htaccess_configuration(options)
         directive = ""
         if options.has_key?(:htaccess_capable)
-          directive  = "  <Directory #{options[:document_root]}>\n"
-          directive << "    Order allow,deny\n"
-          directive << "    Options FollowSymLinks\n"
-          directive << "    AllowOverride all\n"
-          directive << "    Allow from all\n"
-          directive << "  </Directory>\n"
+          directive  = "\t<Directory #{options[:document_root]}>\n"
+          directive << "\t\tOrder allow,deny\n"
+          directive << "\t\tOptions FollowSymLinks\n"
+          directive << "\t\tAllowOverride all\n"
+          directive << "\t\tAllow from all\n"
+          directive << "\t</Directory>\n"
         end
         return directive
       end

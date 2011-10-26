@@ -13,7 +13,7 @@ module ServerTools
     #  Defines the minor version
     # PATCH:
     #  Defines the patch version
-    MAJOR, MINOR, PATCH = 1, 0, 0
+    MAJOR, MINOR, PATCH = 1, 0, 1
 
     ##
     # Returns the major version ( big release based off of multiple minor releases )
